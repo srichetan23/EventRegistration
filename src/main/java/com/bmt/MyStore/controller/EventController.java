@@ -1,7 +1,9 @@
 package com.bmt.MyStore.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,12 +38,20 @@ public class EventController {
 		String email = currentUserEmail(principal);
 
 		List<Event> events = eventRepository.findAllByOrderByIdAsc();
+
 		Set<Integer> registered = registrationRepository.findByUserEmail(email).stream()
 				.map(EventRegistration::getEventNumber)
 				.collect(Collectors.toSet());
 
+		// How many people have registered for each event (for "seats left").
+		Map<Integer, Long> counts = new HashMap<>();
+		for (Event e : events) {
+			counts.put(e.getId(), registrationRepository.countByEventNumber(e.getId()));
+		}
+
 		model.addAttribute("events", events);
 		model.addAttribute("registeredEventNumbers", registered);
+		model.addAttribute("registeredCount", counts);
 		model.addAttribute("userName", principal != null ? principal.getName() : "");
 		return "eventRegPage";
 	}
@@ -52,7 +62,8 @@ public class EventController {
 
 		if (email != null && !registrationRepository.existsByUserEmailAndEventNumber(email, eventNumber)) {
 			Event event = eventRepository.findById(eventNumber).orElse(null);
-			if (event != null) {
+			// Only register if there is still room.
+			if (event != null && registrationRepository.countByEventNumber(eventNumber) < event.getCapacity()) {
 				EventRegistration reg = new EventRegistration();
 				reg.setUserEmail(email);
 				reg.setEventNumber(eventNumber);
@@ -61,6 +72,31 @@ public class EventController {
 			}
 		}
 		return "redirect:/eventRegPage";
+	}
+
+	@GetMapping("/myRegistrations")
+	public String myRegistrations(Principal principal, Model model) {
+		String email = currentUserEmail(principal);
+
+		Set<Integer> registeredIds = registrationRepository.findByUserEmail(email).stream()
+				.map(EventRegistration::getEventNumber)
+				.collect(Collectors.toSet());
+
+		List<Event> myEvents = eventRepository.findAllById(registeredIds).stream()
+				.sorted((a, b) -> Integer.compare(a.getId(), b.getId()))
+				.collect(Collectors.toList());
+
+		model.addAttribute("myEvents", myEvents);
+		return "myRegistrations";
+	}
+
+	@PostMapping("/cancelRegistration")
+	public String cancelRegistration(@RequestParam int eventNumber, Principal principal) {
+		String email = currentUserEmail(principal);
+		if (email != null) {
+			registrationRepository.deleteByUserEmailAndEventNumber(email, eventNumber);
+		}
+		return "redirect:/myRegistrations";
 	}
 
 	/** The login username is the user's name; resolve it to their email for registrations. */

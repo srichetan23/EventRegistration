@@ -1,49 +1,141 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Best Store</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <title>Eventify — Campus Event Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
   </head>
   <body>
-  
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Best Store</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="/contact">Contact</a>
-        </li>
-        
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="btn btn-outline-primary me-2" href="/register">Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-primary me-2" href="/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-outline-dark" href="/adminLogin">Admin</a>
-        </li>
 
-      </ul>
-    </div>
-  </div>
-</nav>
-    
-    <div class="container py-5">
-    	<h1 class="text-center">Hello, world!</h1>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <nav class="navbar navbar-expand-lg navbar-eventify sticky-top">
+      <div class="container">
+        <a class="navbar-brand brand" href="/"><i class="bi bi-calendar2-event-fill"></i>Eventify</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a class="btn btn-outline-brand" href="/login">Login</a>
+            <a class="btn btn-brand" href="/register">Sign Up</a>
+            <a class="btn btn-outline-dark" href="/adminLogin">Admin</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+      <div class="container position-relative" style="z-index:1">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <span class="pill mb-3"><i class="bi bi-stars"></i> Campus Events, all in one place</span>
+            <h1 class="mb-3">Discover &amp; register for events you love.</h1>
+            <p class="lead mb-4">From music nights to coding contests — browse upcoming events, grab your seat in one click, and manage your registrations effortlessly.</p>
+            <div class="d-flex flex-wrap gap-3">
+              <a href="/register" class="btn btn-light-brand btn-lg px-4"><i class="bi bi-person-plus me-2"></i>Get Started</a>
+              <a href="/login" class="btn btn-outline-light btn-lg px-4">I already have an account</a>
+            </div>
+            <div class="d-flex flex-wrap gap-4 mt-4">
+              <div><div class="fs-4 fw-bold">6</div><small class="opacity-75">Event categories</small></div>
+              <div><div class="fs-4 fw-bold">Live</div><small class="opacity-75">Seat availability</small></div>
+              <div><div class="fs-4 fw-bold">1-click</div><small class="opacity-75">Registration</small></div>
+            </div>
+          </div>
+          <div class="col-lg-5 text-center d-none d-lg-block">
+            <i class="bi bi-calendar2-week" style="font-size:13rem;opacity:.22"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Categories -->
+    <section class="section" id="events">
+      <div class="container">
+        <div class="text-center mb-5">
+          <div class="eyebrow">What's on</div>
+          <h2 class="section-title">Explore Event Categories</h2>
+          <p class="text-muted">Sign in to see live dates, venues and seats remaining.</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-6 col-md-4 col-lg-2"><div class="cat-tile ev-musical"><i class="bi bi-music-note-beamed"></i><h5>Musical</h5></div></div>
+          <div class="col-6 col-md-4 col-lg-2"><div class="cat-tile ev-dance"><i class="bi bi-people-fill"></i><h5>Dance</h5></div></div>
+          <div class="col-6 col-md-4 col-lg-2"><div class="cat-tile ev-art"><i class="bi bi-palette-fill"></i><h5>Art</h5></div></div>
+          <div class="col-6 col-md-4 col-lg-2"><div class="cat-tile ev-boxing"><i class="bi bi-trophy-fill"></i><h5>Boxing</h5></div></div>
+          <div class="col-6 col-md-4 col-lg-2"><div class="cat-tile ev-chess"><i class="bi bi-puzzle-fill"></i><h5>Chess</h5></div></div>
+          <div class="col-6 col-md-4 col-lg-2"><div class="cat-tile ev-coding"><i class="bi bi-code-slash"></i><h5>Coding</h5></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section bg-white">
+      <div class="container">
+        <div class="text-center mb-5">
+          <div class="eyebrow">Simple &amp; fast</div>
+          <h2 class="section-title">How it works</h2>
+        </div>
+        <div class="row g-4 text-center">
+          <div class="col-md-4">
+            <span class="step-icon mb-3"><i class="bi bi-person-plus"></i></span>
+            <h5 class="fw-semibold">1. Create an account</h5>
+            <p class="text-muted">Register in seconds with your name, email and password.</p>
+          </div>
+          <div class="col-md-4">
+            <span class="step-icon mb-3"><i class="bi bi-calendar-check"></i></span>
+            <h5 class="fw-semibold">2. Browse events</h5>
+            <p class="text-muted">See dates, venues and how many seats are still available.</p>
+          </div>
+          <div class="col-md-4">
+            <span class="step-icon mb-3"><i class="bi bi-ticket-perforated"></i></span>
+            <h5 class="fw-semibold">3. Reserve your seat</h5>
+            <p class="text-muted">Register with one click and manage it from "My Registrations".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="hero" style="padding:4rem 0">
+      <div class="container text-center position-relative" style="z-index:1">
+        <h2 class="fw-bold mb-3">Ready to join the next event?</h2>
+        <a href="/register" class="btn btn-light-brand btn-lg px-5">Sign Up Free</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="brand mb-2"><i class="bi bi-calendar2-event-fill"></i>Eventify</div>
+            <p class="mb-0" style="max-width:380px">A campus event registration platform built with Spring Boot, Thymeleaf and Bootstrap.</p>
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6 class="text-white">Links</h6>
+            <a class="d-block mb-1" href="/">Home</a>
+            <a class="d-block mb-1" href="/login">Login</a>
+            <a class="d-block mb-1" href="/register">Sign Up</a>
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6 class="text-white">Admin</h6>
+            <a class="d-block mb-1" href="/adminLogin">Admin Login</a>
+            <a class="d-block mb-1" href="/contact">Contact</a>
+          </div>
+        </div>
+        <hr class="border-secondary">
+        <p class="mb-0 text-center small">&copy; 2026 Eventify. Built for learning.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -25,6 +25,7 @@ public class SecurityConfig {
 						.requestMatchers("/logout").permitAll()
 						.requestMatchers("/adminLogin").permitAll()
 						.requestMatchers("/h2-console/**").permitAll()
+						.requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
 						.anyRequest().authenticated()
 	)
 	.formLogin(form->form
